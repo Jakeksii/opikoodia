@@ -1,0 +1,11 @@
+main{
+    display: grid;
+    justify-content: center;
+}
+
+h1:hover {
+    transition: 0.5s;
+    color: red;
+    width: 200%;
+    height: 200%;
+}
