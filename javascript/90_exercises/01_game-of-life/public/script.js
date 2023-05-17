@@ -3,10 +3,10 @@ var context;
 var interval;
 var simulating = 0;
 
-var SIZE = 1000;
-var COLUMNS = 50;
-var ROWS = 50;
-var CELLSIZE = 5;
+var SIZE = 500;
+var COLUMNS = 10;
+var ROWS = 10;
+var CELLSIZE = 50;
 
 var BOARD = [];
 
@@ -23,28 +23,28 @@ class cell {
 
     calculateNeighbours(){
         switch (true){
-            case (row === 0 && col === 0): //top left
+            case (this.row === 0 && this.col === 0): //top left
                 return [1,0, 0,1, 1,1];
 
-            case (row === 0 && col === COLUMNS-1): //top right
+            case (this.row === 0 && this.col === COLUMNS-1): //top right
                 return [-1,0, 0,1, -1,1];
 
-            case (row === ROWS-1 && col === 0): //bottom right
+            case (this.row === ROWS-1 && this.col === 0): //bottom right
                 return [-1,-1, 0,-1, -1,-1];
 
-            case (row === ROWS-1 && col === COLUMNS-1): //bottom left
+            case (this.row === ROWS-1 && this.col === COLUMNS-1): //bottom left
                 return [-1,0, 0,1, -1,1];
 
-            case (col === 0): //top
+            case (this.col === 0): //top
                 return [0,-1, 0,1, 1,-1, 1,0, 1,1];
 
-            case (row === 0): //left
+            case (this.row === 0): //left
                 return [-1,0, -1,1, 0,1, 1,1, 1,0];
 
-            case (row === ROWS-1): //right
+            case (this.row === ROWS-1): //right
                 return [-1,0, -1,-1, 0,-1, 1,-1, 1,0];
 
-            case (col === COLUMNS-1): //bottom
+            case (this.col === COLUMNS-1): //bottom
                 return [0,-1, -1,-1, -1,0 -1,1, 0,1];
 
             default: //center
@@ -59,15 +59,16 @@ class cell {
     checkNeighbours(){
         this.neighboursAlive = 0;
 
-        const neighbours = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1];
+        for(let i=0; i<this.neighbours.length; i+=2){
 
-        
+            console.log(this.col + " : " + this.row + " " + this.col + this.neighbours[i] + " " + this.row + this.neighbours[i+1])
 
-        for(let i=0; i<neighbours.length; i+=2){
-
-            let neighbour = BOARD[(this.col+neighbours[i])*ROWS + (this.row+neighbours[i+1])]
+            let neighbour = BOARD.find(cell => cell.col === this.neighbours[i]*CELLSIZE && cell.row === this.neighbours[i+1]*CELLSIZE)
+            //BOARD[(this.col+this.neighbours[i]*CELLSIZE)*ROWS + (this.row+this.neighbours[i+1]*CELLSIZE)]
             if(neighbour){
                 this.neighboursAlive += neighbour.alive ? 1 : 0;
+            }else{
+                console.log("Miss");
             }
         }
         console.log("Cell " + this.row + " : " + this.col + " has " + this.neighboursAlive + " neighbours!")
