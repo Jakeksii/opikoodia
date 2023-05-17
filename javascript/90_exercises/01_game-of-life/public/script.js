@@ -3,10 +3,10 @@ var context;
 var interval;
 var simulating = 0;
 
-var SIZE = 500;
-var COLUMNS = 10;
-var ROWS = 10;
-var CELLSIZE = 50;
+var SIZE = 1000;
+var COLUMNS = 50;
+var ROWS = 50;
+var CELLSIZE = 5;
 
 var BOARD = [];
 
@@ -18,37 +18,40 @@ class cell {
         this.alive = alive;
         this.stateChange = false;
         this.neighboursAlive = 0;
+        this.neighbours = this.calculateNeighbours();
+    }
 
+    calculateNeighbours(){
         switch (true){
             case (row === 0 && col === 0): //top left
-                this.neighbours = [1,0, 0,1, 1,1];
-                break;
+                return [1,0, 0,1, 1,1];
+
             case (row === 0 && col === COLUMNS-1): //top right
-                this.neighbours = [0,-1, 1,0, 1,-1];
-                break;
+                return [-1,0, 0,1, -1,1];
+
             case (row === ROWS-1 && col === 0): //bottom right
-                this.neighbours = [-1,0, 0,-1, -1,-1];
-                break;
+                return [-1,-1, 0,-1, -1,-1];
+
             case (row === ROWS-1 && col === COLUMNS-1): //bottom left
-                this.neighbours = [-1,0, 0,1, -1,1];
-                break;
+                return [-1,0, 0,1, -1,1];
+
             case (col === 0): //top
-                this.neighbours = [0,-1, 0,1, 1,-1, 1,0, 1,1];
-                break;
+                return [0,-1, 0,1, 1,-1, 1,0, 1,1];
+
             case (row === 0): //left
-                this.neighbours = [-1,0, -1,1, 0,1, 1,1, 1,0];
-                break;
+                return [-1,0, -1,1, 0,1, 1,1, 1,0];
+
             case (row === ROWS-1): //right
-                this.neighbours = [-1,0, -1,-1, 0,-1, 1,-1, 1,0];
-                break;
+                return [-1,0, -1,-1, 0,-1, 1,-1, 1,0];
+
             case (col === COLUMNS-1): //bottom
-                this.neighbours = [0,-1, -1,-1, -1,0 -1,1, 0,1];
-                break;
+                return [0,-1, -1,-1, -1,0 -1,1, 0,1];
+
             default: //center
-                this.neighbours = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1];
-                break;
+                return [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1];
         }
     }
+    
     draw(){
         context.fillStyle = this.alive ? "black" : "white";
         context.fillRect(this.row*CELLSIZE, this.col*CELLSIZE, CELLSIZE, CELLSIZE);
@@ -56,12 +59,18 @@ class cell {
     checkNeighbours(){
         this.neighboursAlive = 0;
 
-        for(let i=0; i<this.neighbours.length; i+=2){
-            let neighbour = BOARD[(this.col+this.neighbours[i])*ROWS + (this.row+this.neighbours[i+1])] //.find(cell => cell.row === (cellRow + neighbours[i]) && cell.col === (cellCol + neighbours[i+1]));
-            console.log("naapuri "+ neighbour.row +" : " + neighbour.col + " " + neighbour.alive)
-            this.neighboursAlive += neighbour.alive ? 1 : 0;
+        const neighbours = [-1,-1, 0,-1, 1,-1, -1,0, 1,0, -1,1, 0,1, 1,1];
+
+        
+
+        for(let i=0; i<neighbours.length; i+=2){
+
+            let neighbour = BOARD[(this.col+neighbours[i])*ROWS + (this.row+neighbours[i+1])]
+            if(neighbour){
+                this.neighboursAlive += neighbour.alive ? 1 : 0;
+            }
         }
-        console.log("Solu: " + this.row + " : " + this.col + " naapurit hengissä "+ this.neighboursAlive + "\n")
+        console.log("Cell " + this.row + " : " + this.col + " has " + this.neighboursAlive + " neighbours!")
     }
 }
 
@@ -125,7 +134,9 @@ function startSimulation(){
 
 function simulate() { //needs to be faster  + ottaa jostain syystä vastakkaisen kulma naapuriksi
     //let aliveCells = BOARD.filter(cell => cell.alive === true);
+    console.log("start check");
     BOARD.forEach(cell => {
         cell.checkNeighbours();
     });
+    console.log("end check");
 }
