@@ -11,7 +11,6 @@ createForm = () => {
     root.setAttribute("class", "m-3")
     
     //First name input and label
-
     let firstNameInput = document.createElement("input");
     firstNameInput.setAttribute("type","text");
     firstNameInput.setAttribute("id","firstname");
@@ -25,7 +24,6 @@ createForm = () => {
     firstNameLabel.appendChild(firstNameText);
 
     //Last name input and label
-
     let lastNameInput = document.createElement("input");
     lastNameInput.setAttribute("type","text");
     lastNameInput.setAttribute("id","lastName");
@@ -39,7 +37,6 @@ createForm = () => {
     lastNameLabel.appendChild(lastNameText);
 
     //Email input and label
-
     let emailInput = document.createElement("input");
     emailInput.setAttribute("type","email");
     emailInput.setAttribute("id","email");
@@ -53,7 +50,6 @@ createForm = () => {
     emailLabel.appendChild(emailText);
 
     //Phone input and label
-
     let phoneInput = document.createElement("input");
     phoneInput.setAttribute("type","tel");
     phoneInput.setAttribute("id","phone");
@@ -74,7 +70,6 @@ createForm = () => {
     submitButton.setAttribute("value", "Add");
 
     //Append to form
-
     form.append(
         firstNameLabel,
         firstNameInput,
@@ -166,13 +161,12 @@ function populateTable(list){
         body.appendChild(tableRow);
         }
 
-        
+
     table.appendChild(body);
     root.appendChild(table);
 }
 
 //REST API CALLS
-
 addContact = async () => {
     const firstName = document.getElementById("firstname");
     const lastName = document.getElementById("lastName");
