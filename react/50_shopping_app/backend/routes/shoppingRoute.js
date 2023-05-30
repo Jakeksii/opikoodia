@@ -8,8 +8,8 @@ router.get("/shopping", async (req, res) => {
         const items = await itemModel.find();
         return res.status(200).json(items);
     } catch (error) {
-        console.log(err);
-        return res.status(500).json({ message: "Internal server error" + err.message })
+        console.log(error);
+        return res.status(500).json({ message: "Internal server error" + error.message })
     }
 })
 
@@ -34,7 +34,6 @@ router.post("/shopping", async (req, res) => {
 router.delete("/shopping/:id", async (req, res) => {
     try {
         let stat = await itemModel.deleteOne({"_id":req.params.id})
-        console.log(stat)
         return res.status(200).json(stat)
 
     } catch (error) {
@@ -53,7 +52,6 @@ router.put("/shopping/:id", async (req, res) => {
     try {
         const {type, count, price} = req.body
         const stat = await itemModel.replaceOne({"_id":req.params.id}, {type, count, price})
-        console.log(stat)
         return res.status(201).json(stat)
     } catch (error) {
         console.log(error);
