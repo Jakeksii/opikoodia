@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 
 let Schema = mongoose.Schema({
+    user: {
+        type:String, 
+        index:true,
+        required: true
+    },
     type: {
         type: String,
         required: true

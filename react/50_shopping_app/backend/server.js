@@ -1,6 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
+
 import shoppingRoute from "./routes/shoppingRoute.js"
+import user from "./models/user.js";
+import session from "./models/session.js";
 
 let app = express();
 app.use(express.json())

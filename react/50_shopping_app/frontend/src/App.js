@@ -1,7 +1,9 @@
 import './App.css';
 import {useState, useEffect} from 'react';
-
+import ShoppingList from './components/ShoppingList';
 import ShoppingForm from './components/ShoppingForm';
+import Navbar from './components/Navbar';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 function App() {
 
@@ -14,8 +16,14 @@ function App() {
     request:{},
     action:""
   })
+
+  //USE EFFECTS
+
+  useEffect(() => { //get list from start
+    console.log("Get list got triggered")
+    getList();
+  },[])
   
-  //USE EFFECT
   useEffect(() => {
     const fetchData = async () => {
       if(!urlRequest.url) {
@@ -106,7 +114,18 @@ function App() {
 
   return (
     <div className="App">
-      <ShoppingForm addItem={addItem}/>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<ShoppingList
+          list={state.list}
+          removeItem={removeItem}
+          editItem={editItem} />}
+        />
+        <Route path='/form' element={<ShoppingForm
+          addItem={addItem} />}
+        />
+        <Route path='*' element={<Navigate to="/" />} />
+      </Routes>
     </div>
   );
 }
